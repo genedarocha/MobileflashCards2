@@ -1,8 +1,14 @@
+// Startup Screen 
+// Author Gene Da Rocha
+
 import { AppLoading, SplashScreen, Updates } from 'expo';
 import { Asset } from 'expo-asset';
 import Constants from 'expo-constants';
+import GetMyListofDecks from './components/GetMyListofDecks';
 import React from 'react';
+import { createAppContainer } from 'react-navigation'
 import { Animated, Button, StyleSheet, Text, View } from 'react-native';
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 // Instruct SplashScreen not to hide yet, we want to do this manually
 SplashScreen.preventAutoHide();
@@ -14,7 +20,34 @@ export default function App() {
     </AnimatedAppLoader>
   );
 }
-
+//gdr
+export const Tabs = createAppContainer(
+  createBottomTabNavigator({
+    GetMyListofDecks: {
+      screen: GetMyListofDecks,
+      navigationOptions: {
+        tabBarLabel: 'List of Decks',
+        tabBarIcon: ({ tintColor }) => (
+          <Ionicons name="ios-list-box" size={30} color={tintColor} />
+        ),
+      },
+    },
+    AddTheDeck: {
+      screen: NewDeck,
+      navigationOptions: {
+        tabBarLabel: 'New Deck',
+        tabBarIcon: ({ tintColor }) => (
+          <Ionicons name="ios-add-circle" size={30} color={tintColor} />
+        ),
+      },
+    },
+  },{
+  tabBarOptions:{
+    activeTintColor: '#7b68ee',
+  }
+  })
+);
+//end of gdr
 function AnimatedAppLoader({ children, image }) {
   const [isSplashReady, setSplashReady] = React.useState(false);
 
@@ -71,8 +104,7 @@ function AnimatedSplashScreen({ children, image }) {
       setAppReady(true);
     }
   });
-
-  return (
+    return (
     <View style={{ flex: 1 }}>
       {isAppReady && children}
       {!isSplashAnimationComplete && (
